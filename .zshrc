@@ -1,0 +1,105 @@
+#-------------------------------------------------------------------------------
+# Path to your dotfiles installation.
+#-------------------------------------------------------------------------------
+
+export DOTFILES=$HOME/dotfiles
+
+#-------------------------------------------------------------------------------
+# Path to your oh-my-zsh installation.
+#-------------------------------------------------------------------------------
+
+export ZSH=$HOME/.oh-my-zsh
+
+#-------------------------------------------------------------------------------
+# Set name of the theme to load.
+# Look in ~/.oh-my-zsh/themes/
+# Optionally, if you set this to "random", it'll load a random theme each
+# time that oh-my-zsh is loaded.
+#-------------------------------------------------------------------------------
+
+# see https://github.com/bhilburn/powerlevel9k
+POWERLEVEL9K_DISABLE_RPROMPT=true
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
+ZSH_THEME="powerlevel9k/powerlevel9k"
+POWERLEVEL9K_DIR_HOME_FOREGROUND="white"
+POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND="white"
+POWERLEVEL9K_DIR_DEFAULT_FOREGROUND="white"
+
+
+#-------------------------------------------------------------------------------
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+#-------------------------------------------------------------------------------
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+#-------------------------------------------------------------------------------
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+#-------------------------------------------------------------------------------
+
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+
+#-------------------------------------------------------------------------------
+# Activate Oh-My-Zsh
+#-------------------------------------------------------------------------------
+
+source $ZSH/oh-my-zsh.sh
+
+
+# ------------------------------------------------------------------------------
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+# ------------------------------------------------------------------------------
+
+plugins=(git)
+
+#-------------------------------------------------------------------------------
+# Load the shell dotfiles, and then some:
+# * ~/.path can be used to extend `$PATH`.
+# * ~/.extra can be used for other settings you don’t want to commit.
+#-------------------------------------------------------------------------------
+
+files=("$DOTFILES/export.sh" "$DOTFILES/path.sh" "$DOTFILES/aliases.sh" "$DOTFILES/functions.sh");
+
+for file in "${files[@]}"; do
+  [ -r "$file" ] && [ -f "$file" ] && source "$file";
+done;
+
+unset files file;
+
+
+#-------------------------------------------------------------------------------
+# Graphite shell completion
+#-------------------------------------------------------------------------------
+gt completion >> ~/.zshrc
+
+#-------------------------------------------------------------------------------
+#
+# Run 'nvm use' automatically every time there's 
+# a .nvmrc file in the directory. Also, revert to default 
+# version when entering a directory without .nvmrc
+#
+#-------------------------------------------------------------------------------
+enter_directory() {
+if [[ $PWD == $PREV_PWD ]]; then
+    return
+fi
+
+PREV_PWD=$PWD
+if [[ -f ".nvmrc" ]]; then
+    nvm use
+    NVM_DIRTY=true
+elif [[ $NVM_DIRTY = true ]]; then
+    nvm use default
+    NVM_DIRTY=false
+fi
+}
+
+export PROMPT_COMMAND="$PROMPT_COMMAND; enter_directory"
+

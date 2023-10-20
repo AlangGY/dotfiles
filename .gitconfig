@@ -1,0 +1,11 @@
+[init]
+	defaultBranch = main
+[include]
+	path = ~/.git-private
+[includeIf "gitdir/i:~/dev/company/"]
+	path = ~/.git-company
+[alias]
+	precommit = commit --allow-empty
+	amend = commit -a --amend --no-edit
+[color]
+	ui = true

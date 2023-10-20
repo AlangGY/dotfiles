@@ -1,0 +1,9 @@
+[user]
+	name = Alang Kim
+	email = rlaangh77@naver.com
+[color "diff"]
+	meta = blue black bold
+[github]
+  user = "AlangGY"
+[core]
+  sshCommand = "ssh -i  ~/.ssh/id_rsa_private"

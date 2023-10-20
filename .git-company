@@ -1,0 +1,9 @@
+[user]
+	name = JEONG WOON KIM
+	email = jkim@iportfolio.co.kr
+[color "diff"]
+	meta = blue black bold
+[github]
+  user = "ipf-jkim"
+[core]
+  sshCommand = "ssh -i  ~/.ssh/id_rsa_company"

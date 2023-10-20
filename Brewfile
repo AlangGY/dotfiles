@@ -3,6 +3,7 @@ tap "homebrew/bundle"
 tap "homebrew/services"
 tap "nektos/tap"
 tap "withgraphite/tap"
+
 brew "act"
 brew "webp"
 brew "jpeg-xl"
@@ -45,9 +46,14 @@ brew "tomcat@8"
 brew "tree"
 brew "zsh"
 brew "withgraphite/tap/graphite"
-cask "adoptopenjdk11"
-cask "adoptopenjdk14"
+
+
+# Applications
 cask "visual-studio-code"
+cask "iterm2"
+
+
+# vscode extensions
 vscode "aaron-bond.better-comments"
 vscode "dbaeumer.vscode-eslint"
 vscode "eamodio.gitlens"
@@ -65,9 +71,7 @@ vscode "ms-azuretools.vscode-docker"
 vscode "MS-CEINTL.vscode-language-pack-ko"
 vscode "ms-vscode-remote.remote-containers"
 vscode "naumovs.color-highlight"
-vscode "nrwl.angular-console"
 vscode "PKief.material-icon-theme"
-vscode "redhat.java"
 vscode "ritwickdey.LiveServer"
 vscode "streetsidesoftware.code-spell-checker"
 vscode "styled-components.vscode-styled-components"
