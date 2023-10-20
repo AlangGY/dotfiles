@@ -25,10 +25,14 @@ if test ! $(which brew); then
 fi
 
 #-------------------------------------------------------------------------------
-# Install executables and libraries
+# Install executables and libraries with brew
 #-------------------------------------------------------------------------------
 
+brew update
+brew tap homebrew/bundle
 brew bundle --file=$DOTFILES/Brewfile
+brew cleanup
+brew cleanup cask
 
 #-------------------------------------------------------------------------------
 # Install global Git configuration
