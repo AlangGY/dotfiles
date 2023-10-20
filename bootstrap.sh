@@ -40,19 +40,13 @@ brew cleanup cask
 
 chsh -s $(which zsh)
 
-
-#-------------------------------------------------------------------------------
-# Install Oh My Zsh
-#-------------------------------------------------------------------------------
-
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-
 #-------------------------------------------------------------------------------
 # Install global Git configuration
 #-------------------------------------------------------------------------------
 
 ln -nfs $DOTFILES/.gitconfig $HOME/.gitconfig
+ln -nfs $DOTFILES/.git-company $HOME/.git-company
+ln -nfs $DOTFILES/.git-private $HOME/.git-private
 
 
 #-------------------------------------------------------------------------------
