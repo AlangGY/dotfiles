@@ -50,6 +50,7 @@ brew "withgraphite/tap/graphite"
 # Applications
 cask "visual-studio-code"
 cask "iterm2"
+cask "fork"
 
 
 # vscode extensions
