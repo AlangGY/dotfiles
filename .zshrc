@@ -17,10 +17,10 @@ export ZSH=$HOME/.oh-my-zsh
 # time that oh-my-zsh is loaded.
 #-------------------------------------------------------------------------------
 
-# see https://github.com/bhilburn/powerlevel9k
+# see https://github.com/bhilburn/powerlevel10k
+ZSH_THEME="powerlevel10k/powerlevel10k"
 POWERLEVEL9K_DISABLE_RPROMPT=true
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
-ZSH_THEME="powerlevel9k/powerlevel9k"
 POWERLEVEL9K_DIR_HOME_FOREGROUND="white"
 POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND="white"
 POWERLEVEL9K_DIR_DEFAULT_FOREGROUND="white"
@@ -76,8 +76,27 @@ unset files file;
 
 #-------------------------------------------------------------------------------
 # Graphite shell completion
+#
 #-------------------------------------------------------------------------------
-gt completion >> ~/.zshrc
+
+_gt_yargs_completions()
+{
+  local reply
+  local si=$IFS
+  IFS=$'
+' reply=($(COMP_CWORD="$((CURRENT-1))" COMP_LINE="$BUFFER" COMP_POINT="$CURSOR" gt --get-yargs-completions "${words[@]}"))
+  IFS=$si
+  _describe 'values' reply
+}
+compdef _gt_yargs_completions gt
+
+#-------------------------------------------------------------------------------
+# NVM
+#-------------------------------------------------------------------------------
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 #-------------------------------------------------------------------------------
 #

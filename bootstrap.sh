@@ -13,7 +13,7 @@ export DOTFILES=$HOME/dotfiles
 #-------------------------------------------------------------------------------
 
 if [ -d "$DOTFILES/.git" ]; then
-  git --work-tree="$DOTFILES" --git-dir="$DOTFILES/.git" pull origin master
+  git --work-tree="$DOTFILES" --git-dir="$DOTFILES/.git" pull origin main
 fi
 
 #-------------------------------------------------------------------------------
@@ -35,31 +35,25 @@ brew cleanup
 brew cleanup cask
 
 #-------------------------------------------------------------------------------
-# Install global Git configuration
-#-------------------------------------------------------------------------------
-
-ln -nfs $DOTFILES/.gitconfig $HOME/.gitconfig
-
-#-------------------------------------------------------------------------------
 # Make ZSH the default shell environment
 #-------------------------------------------------------------------------------
 
 chsh -s $(which zsh)
 
+
 #-------------------------------------------------------------------------------
-# Install Oh-my-zsh
+# Install Oh My Zsh
 #-------------------------------------------------------------------------------
 
-sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-# Install Powerline theme
-# Neet to set font in iterm2 preferences
-wget https://raw.githubusercontent.com/jeremyFreeAgent/oh-my-zsh-powerline-theme/master/powerline.zsh-theme -O $HOME/.oh-my-zsh/themes/powerline.zsh-theme
-git clone git@github.com:powerline/fonts.git && bash fonts/install.sh
-sleep 3
-rm -rf fonts
 
-git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
+#-------------------------------------------------------------------------------
+# Install global Git configuration
+#-------------------------------------------------------------------------------
+
+ln -nfs $DOTFILES/.gitconfig $HOME/.gitconfig
+
 
 #-------------------------------------------------------------------------------
 # Vim setting
@@ -96,25 +90,26 @@ mkdir -p $HOME/dev/company
 mkdir -p $HOME/dev/private
 
 #-------------------------------------------------------------------------------
+# Source profile
+#-------------------------------------------------------------------------------
+
+ln -nfs $DOTFILES/.zshrc $HOME/.zshrc
+source $HOME/.zshrc
+
+#-------------------------------------------------------------------------------
 # Install global JavaScript tools
 #-------------------------------------------------------------------------------
 
-nvm install stable
-nvm alias default stable
-
-#-------------------------------------------------------------------------------
-# Install pnpm
-#-------------------------------------------------------------------------------
-
-npm install -g pnpm
+nvm install --lts
 
 #-------------------------------------------------------------------------------
 # Install global node packages
 #-------------------------------------------------------------------------------
 
-pnpm install -g \
+npm install -g \
  yarn \
  turbo \
+ pnpm \
 
 #-------------------------------------------------------------------------------
 # Install Rails & Jekyll
@@ -128,12 +123,6 @@ pnpm install -g \
 
 # git clone git@github.com:appkr/jsh.git $HOME/jsh
 
-#-------------------------------------------------------------------------------
-# Source profile
-#-------------------------------------------------------------------------------
-
-ln -nfs $DOTFILES/.zshrc $HOME/.zshrc
-source $HOME/.zshrc
 
 #-------------------------------------------------------------------------------
 # Enable jenv and rbenv
