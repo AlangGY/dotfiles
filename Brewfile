@@ -45,12 +45,18 @@ brew "tomcat@8"
 brew "tree"
 brew "zsh"
 brew "withgraphite/tap/graphite"
+brew "mas"
 
 
 # Applications
 cask "visual-studio-code"
 cask "iterm2"
 cask "fork"
+cask "slack"
+cask "discord"
+cask "ark"
+cask "google-chrome"
+cask "notion"
 
 
 # vscode extensions
