@@ -57,7 +57,7 @@ cask "discord"
 cask "ark"
 cask "google-chrome"
 cask "notion"
-
+cask "figma"
 
 # vscode extensions
 vscode "aaron-bond.better-comments"
