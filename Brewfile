@@ -58,6 +58,7 @@ cask "ark"
 cask "google-chrome"
 cask "notion"
 cask "figma"
+cask "spectacle"
 
 # vscode extensions
 vscode "aaron-bond.better-comments"
