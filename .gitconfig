@@ -4,8 +4,106 @@
 	path = ~/.git-private
 [includeIf "gitdir/i:~/dev/company/"]
 	path = ~/.git-company
-[alias]
-	precommit = commit --allow-empty
-	amend = commit -a --amend --no-edit
 [color]
 	ui = true
+[alias]
+	alias = "!git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /"
+
+	a = "!git add $(git dfile)"
+	ap = "!git add -p $(git dfile)"
+	ac = "!f() { files=$(git dfile); if [ -n \"$files\" ]; then git add $files && git commit -v; fi; }; f"
+
+	precommit = commit --allow-empty
+	amend = commit -a --amend --no-edit
+	# selective add & fix
+	af = "!f() { files=$(git dfile); if [ -n \"$files\" ]; then git add $files && git fix; fi; }; f"
+	# all add & fix
+	aaf = "!git add --all && git fix"
+
+	a = "!git add $(git dfile)"
+	
+	fixup = "!f() { TARGET=$(git rev-parse "$1"); git commit --fixup=$TARGET ${@:2} && GIT_SEQUENCE_EDITOR=true git rebase -i --autostash --autosquash $TARGET^; }; f"
+	fix = "!git fixup $(git lhash)"
+	
+	dfile = "!#--------------------------------\n\
+	f() { \n\
+			git status -s \
+			| fzf -m --ansi \
+					--preview \"if [[ {1} == '??' ]]; then bat {2}; \
+											elif [[ {1} == 'D' ]]; then git show HEAD:{2}; \
+											elif git diff --cached --name-only | grep -q {2}; then git diff --cached --color=always {2}; \
+											else git diff --color=always {2}; fi\" \
+					--bind '?:toggle-preview' \
+					--bind '!:toggle-preview-wrap' \
+					--header '?: toggle preview !:toggle-preview-wrap' \
+			| awk '{print $2}'; \
+	}; f"
+	lhash =  "!#--------------------------------\n\
+	f() { \n\
+			git log \
+					--color=always \
+					--pretty=format:'%C(red)%h%C(auto)%d %s %C(green)(%cr)%C(bold blue) %an' \
+			| fzf --ansi --reverse \
+					--preview 'echo {} \
+							| cut -d \" \" -f1 \
+							| xargs git show --color=always' \
+					--preview-window up:60%:wrap \
+					--bind '?:toggle-preview' \
+					--bind '!:toggle-preview-wrap' \
+					--header '?: toggle preview !:toggle-preview-wrap' \
+			| awk '{print $1}'; \
+	}; f"
+	alias-help = "!#--------------------------------\n\
+			f() { \n\
+					git alias | grep -- '-help =' | awk -F ' =' '{print $1}' | grep -v 'alias-help' | grep -v '^$' | xargs -I{} git {} | less \n\
+			}; f"
+
+	####################################################
+	#                                                  #
+	# config                                           #
+	#                                                  #
+	####################################################
+	config-help = "!#--------------------------------\n\
+	f() { \n\
+			echo \"\\033[1m\\033[32m git config-help \\033[0m\"; \n\
+			echo '\n' \n\
+			echo \"\\033[33m 계정 설정: 이름과 이메일 주소를 설정합니다 \\033[0m\"; \n\
+			echo '\n\tgit config [--system|--global|--local] user.name <username>' \n\
+			echo '\n\tgit config [--system|--global|--local] user.email <email>' \n\
+			echo '\n' \n\
+			echo \"\\033[33m 설정 확인: git config 값을 확인합니다 \\033[0m\"; \n\
+			echo '\n\tgit config [--system|--global|--local] --list' \n\
+			echo '\n\tgit config [--system|--global|--local] --get user.name' \n\
+			echo '\n' \n\
+			echo \"\\033[33m 설정 파일 수정: 설정 파일을 열어서 바로 수정합니다 \\033[0m\"; \n\
+			echo '\n\tgit config [--system|--global|--local] --edit' \n\
+			echo '\n' \n\
+			echo \"\\033[33m 설정 항목 삭제: 설정 항목을 삭제합니다 \\033[0m\"; \n\
+			echo '\n\tgit config [--system|--global|--local] --unset commit.template' \n\
+			echo '\n\tgit config [--system|--global|--local] --remove-section commit' \n\
+			echo '\n' \n\
+			echo \"\\033[33m hookspath 확인: 연결된 git hooks 경로를 확인합니다 \\033[0m\"; \n\
+			echo '\n\tgit rev-parse --git-path hooks' \n\
+			echo '\n\tgit config --list --local | grep "hookspath"' \n\
+			echo '\n' \n\
+			echo \"\\033[33m hookspath 설정: git hooks 경로를 설정합니다 \\033[0m\"; \n\
+			echo '\n\tgit config core.hooksPath <current_path>' \n\
+			echo '\n\tgit config --local --unset core.hooksPath' \n\
+			echo '\n' \n\
+			echo \"\\033[33m commit template 설정: 만들어둔 파일로 commit template을 설정합니다 \\033[0m\"; \n\
+			echo '\n\tgit config --local commit.template <file>' \n\
+			echo '\n\tgit config --local commit.template .git/.gitmessage' \n\
+			echo '\n' \n\
+	}; f"
+	ps = git push
+	pushthis = push -u origin head
+	pushthisforce = push -u origin head --force-with-lease
+	pushthisset = "!git pushthis && git bset"
+	pushdelthis = "!git push origin :$(git head)"
+	push-all = "!f() { for remote in $(git remote); do git push $remote head; done }; f"
+	push-all-force = "!f() { for remote in $(git remote); do git push $remote head --force-with-lease; done }; f"
+	l = "log \
+        --color --graph --decorate \
+        --date=format:'%Y-%m-%d' \
+        --abbrev-commit \
+        --pretty=format:'%C(red)%h%C(auto)%d %s %C(green)(%cr)%C(bold blue) %an'"

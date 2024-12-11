@@ -122,3 +122,13 @@ fi
 
 export PROMPT_COMMAND="$PROMPT_COMMAND; enter_directory"
 
+# Created by `pipx` on 2024-08-06 02:33:38
+export PATH="$PATH:/Users/moohokim/.local/bin"
+export PATH="$PATH:/opt/homebrew/opt/openjdk/bin"
+
+export CPPFLAGS="-I/opt/homebrew/opt/openjdk@17/include"
+export JAVA_HOME="/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home"
+
+
+
+export ANDROID_HOME=$HOME/Library/Android/sdk
